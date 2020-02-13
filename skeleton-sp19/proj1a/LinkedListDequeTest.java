@@ -29,17 +29,17 @@ public class LinkedListDequeTest {
 		System.out.println("Printing out deque: ");
 		lld1.printDeque();
 
-//		System.out.println(lld1.removeFirst());
+		System.out.println(lld1.removeFirst());
 		System.out.println("Printing out deque: ");
 		lld1.printDeque();
 
-		System.out.println("get() from list: "+lld1.get(0));
-		System.out.println("getRecursive() from list: "+lld1.getRecursive(1));
+		System.out.println("get(0) from list: "+lld1.get(-1));
+		System.out.println("getRecursive(0) from list: "+lld1.getRecursive(0));
 
-//		LinkedListDeque<String> lld2 = new LinkedListDeque<String>(lld1);
-//		System.out.println("Printing out copied deque: ");
-//		lld2.printDeque();
-	}
+		LinkedListDeque<String> lld2 = new LinkedListDeque<String>(lld1);
+		System.out.println("Printing out copied deque: ");
+		lld2.printDeque();
+        	}
 
 	@Test
 	public void testArrayDeque(){
@@ -69,15 +69,27 @@ public class LinkedListDequeTest {
 		System.out.println(lld1.removeFirst());
 		System.out.println("Printing out deque: ");
 		lld1.printDeque();
+		lld1.addLast("1");
+		lld1.addLast("2");
+		lld1.addLast("3");
+		lld1.addLast("4");
+		lld1.addLast("5");
+		lld1.addLast("6");
+		lld1.addLast("7");
+		lld1.addLast("8");
+		lld1.addLast("9");
+		lld1.addLast("10");
+		lld1.addLast("11");
+		lld1.printDeque();
 
-		System.out.println("get() from list: "+lld1.get(4));
-//		System.out.println("getRecursive() from list: "+lld1.getRecursive(1));
+
+		System.out.println("get(0) from list: "+lld1.get(5));
 
 		ArrayDeque<String> lld2 = new ArrayDeque<String>(lld1);
 		System.out.println("Printing out copied deque: ");
 		lld2.printDeque();
-
 	}
+
 
 	/* Utility method for printing out empty checks. */
 	public static boolean checkEmpty(boolean expected, boolean actual) {

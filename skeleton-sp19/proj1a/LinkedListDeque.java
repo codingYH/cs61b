@@ -1,40 +1,53 @@
+import java.security.PublicKey;
+
 public class LinkedListDeque<T> implements Deque<T>  {
+    private class Node{
+        private T item;
+        private Node next;
+        private Node prev;
+
+        private Node(T i, Node p, Node n){
+            item = i;
+            prev = p;
+            next = n;
+        }
+    }
     private Node sentinel;
     private int size;
 
     public LinkedListDeque(){
-        size = 0;
-        //initial sentinel
-        sentinel = new Node(null, null , null );
-        //circular list
+        sentinel = new Node(null, null, null);
         sentinel.next = sentinel;
-        sentinel.prev = sentinel;
+        sentinel.prev =  sentinel;
+        size = 0;
+
     }
     public LinkedListDeque(LinkedListDeque other){
-        size = 0;
-        //initial sentinel
-        sentinel = new Node(null, null , null );
-        //circular list
+        //init deque, all thing should start from zero include size
+        sentinel = new Node(null, null, null);
         sentinel.next = sentinel;
-        sentinel.prev = sentinel;
-        for (int i = 0; i < other.size; i++){
-            addLast((T) other.get(i));
+        sentinel.prev =  sentinel;
+        //start from size o , but not other.size
+        size = 0;
+        Node pOfOther = other.sentinel.next;
+        for(int i = 0; i < other.size; i++){
+            //can't pOfThis.next =pOfOther.next , it would change other
+            addLast(pOfOther.item);
+            pOfOther = pOfOther.next;
         }
-    }
 
+    }
     @Override
     public void addFirst(T item) {
-        //change sentinel.next new node
-        sentinel.next = new Node(item, sentinel, sentinel.next);
-        //list has been modified. change sentinel.next.next.prev
+        size ++;
+        sentinel.next = new Node(item, sentinel,sentinel.next);
         sentinel.next.next.prev = sentinel.next;
-        size = size + 1;
     }
     @Override
     public void addLast(T item) {
+        size ++;
         sentinel.prev = new Node(item, sentinel.prev, sentinel);
         sentinel.prev.prev.next = sentinel.prev;
-        size = size + 1;
     }
     @Override
     public boolean isEmpty() {
@@ -46,81 +59,58 @@ public class LinkedListDeque<T> implements Deque<T>  {
     }
     @Override
     public T removeFirst() {
-        if(sentinel.next.equals(sentinel)){
-            return null;
-        }else {
-            //get item
-            Node n = sentinel.next;
-            //change sentinel.next
-            sentinel.next = sentinel.next.next;
-            //list has been modified. change sentinel.next
-            sentinel.next.prev = sentinel;
-            size--;
-            return n.item;
-        }
+        size --;
+        T item = sentinel.next.item;
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel;
+        return  item;
     }
     @Override
     public T removeLast() {
-        if (sentinel.prev.equals(sentinel)){
-            return null;
-        }else {
-            Node n = sentinel.prev;
-            sentinel.prev = sentinel.prev.prev;
-            sentinel.prev.next = sentinel;
-            size--;
-            return n.item;
-        }
+        size --;
+        T item = sentinel.prev.item;
+        sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next = sentinel;
+        return  item;
     }
     /*
     * use iteration
     * */
     @Override
     public T get(int index) {
-        Node n = sentinel;
-       for(int i = 0; i <= index; i++){
-           n = n.next;
-       }
-       return n.item;
+        if((index > size-1)||(index < 0)){
+            return null;
+        }else {
+            //need a pointer
+            Node p = sentinel;
+            for (int i = 0; i <= index; i++) {
+                p = p.next;
+            }
+            return p.item;
+        }
     }
 
     public void printDeque() {
-        Node n = sentinel;
-        for (int i = 0; i < size; i++){
-            n = n.next;
-            System.out.print(n.item + " ");
+        //need a pointer
+        Node p = sentinel.next;
+        for (int i =0; i < size ; i++){
+            System.out.print(p.item+" ");
+            p = p.next;
         }
         System.out.println();
     }
-    //start from sentinel.next
+    //recursive method should have a  param can be recursive. Like the Node p of method getStartFromPointer
+    // start from sentinel.next
     public T getRecursive(int index){
-        if(index > size-1){
-            throw new IllegalArgumentException("out of range of list");
-        }else{
-            return pointer(sentinel.next, index);
-        }
-
+        return getStartFromPointer(sentinel.next, index);
     }
-    // start from p, find index times next
-    public T pointer(Node p, int index){
-        if (index ==0 ){
+    //start from a pointer
+    public T getStartFromPointer(Node p, int index){
+        if(index == 0){
             return p.item;
-        } else {
-            return pointer(p.next, index-1);
         }
-
-    }
-
-
-    private  class Node {
-        public T item;
-        public Node prev;
-        public Node next;
-
-        private Node(T i, Node n1, Node n2){
-            item = i;
-            prev = n1;
-            next = n2;
+        else {
+            return getStartFromPointer(p.next, index-1);
         }
-
     }
 }

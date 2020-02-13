@@ -3,73 +3,75 @@ import java.util.Objects;
 
 public class ArrayDeque<T> implements Deque<T> {
     private T[] array;
-    private  int nextFirst;
-    private  int nextLast;
+    //array's pointer differ with linkedList
+    private int nextFirst;
+    private int nextLast;
     private int size;
 
     public ArrayDeque(){
-        int size = 0;
+        array = (T[])new Object[8];
         nextFirst = 3;
         nextLast = 4;
-        array = (T[])new Object[8];
-
+        size = 0;
     }
     public ArrayDeque(ArrayDeque other){
-        //is Object!!! not Objects!!!
         array = (T[])new Object[other.array.length];
         nextFirst = other.nextFirst;
         nextLast = other.nextLast;
         size = other.size;
-        System.arraycopy(other.array,0,array,0,other.array.length);
-        //array
-//        for(int i =0; i < other.array.length; i++){
-//            array[i] = (T) other.array[i];
-//        }
+        System.arraycopy(other.array, 0 , array, 0 ,other.array.length);
     }
-    //resize
-    //s is the size of resized arrayList
-    private void resize(int s){
-        T[] arrayL = (T[])new Object[s];
-        System.arraycopy(array, 0, arrayL, 0, size);
-        array = arrayL;
+    private void resize(int length){
+        T[] newArray = (T[]) new Object[length];
+        //newArray start from 0
+        int ni = 0;
+        for(int i = 0; i < array.length; i++){
+            if (!(array[i] == null)){
+                newArray[ni] = array[i];
+                ni ++;
+            }
+        }
+        nextFirst = length - 1;
+        nextLast = size;
+        array = newArray;
     }
-
     private void controlUsage(){
-        if(size == array.length){
-            resize(array.length * 3);
-        }else if(((float)size/(float) array.length < 0.25)&&(array.length >= 16)){
+        float usageRate = (float)size/(float)array.length;
+        if (size == array.length){
+            resize(array.length*2);
+        }else if ((usageRate < 0.25) && (size >= 16)){
             resize(array.length/2);
         }
-    }
 
+    }
     @Override
     public void addFirst(T item) {
         controlUsage();
+        // size ++ should after controlUsage
+        size ++;
         array[nextFirst] = item;
-        size = size + 1;
-        if (nextFirst -1 == -1){
-            nextFirst = array.length-1;
-        }
-        else {
-            nextFirst --;
+        if(nextFirst - 1 <0){
+            nextFirst = array.length -1;
+        }else {
+            nextFirst = nextFirst - 1;
         }
     }
 
     @Override
     public void addLast(T item) {
         controlUsage();
+        size++;
         array[nextLast] = item;
-        size ++;
-        if (nextLast + 1 == array.length){
+        if(nextLast + 1 > array.length -1){
             nextLast = 0;
         }else {
-            nextLast ++;
+            nextLast = nextLast + 1;
         }
     }
 
     @Override
     public boolean isEmpty() {
-        return size ==0;
+        return size == 0;
     }
 
     @Override
@@ -79,8 +81,8 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void printDeque() {
-        for (int i =0; i < array.length; i++){
-            if (!(array[i]== null)) {
+        for(int i = 0; i < array.length; i++){
+            if(!(array[i] == null)){
                 System.out.print(array[i] + " ");
             }
         }
@@ -89,42 +91,46 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T removeFirst() {
+        T item;
         controlUsage();
-        T t = (T) new Object();
-        if (nextFirst +1 == array.length){
-            t = array[0];
+        size--;
+        if(nextFirst + 1 > array.length-1){
+            item = array[0];
             array[0] = null;
-            size --;
-            return t;
-        }
-        else {
-            t = array[nextFirst + 1];
+            nextFirst = 0;
+        }else {
+            item = array[nextFirst + 1];
             array[nextFirst + 1] = null;
-            size --;
-            return t;
+            nextFirst = nextFirst + 1;
         }
+        return item;
     }
 
     @Override
     public T removeLast() {
+        T item;
         controlUsage();
-        T t = (T) new Object();
-        if(nextLast -1 == -1){
-            t = array[array.length -1];
-            array[array.length -1] = null;
-            size --;
-            return  t;
-        }
-        else {
-            t = array[nextLast -1];
+        size --;
+        if (nextLast -1 < 0){
+            item = array[array.length-1];
+            array[array.length-1] = null;
+            nextLast = array.length-1;
+        }else {
+            item = array[nextLast -1];
             array[nextLast -1] = null;
-            size --;
-            return t;
+            nextLast = nextLast - 1;
         }
+        return item;
     }
 
     @Override
     public T get(int index) {
-        return array[index];
+//        resize(array.length);
+        if((index > array.length - 1)||(index < 0)){
+            return null;
+        }
+        else{
+            return array[index];
+        }
     }
 }
