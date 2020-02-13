@@ -1,6 +1,84 @@
+import org.junit.Assert;
+import org.junit.Test;
+
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
-	
+
+	@Test
+	public void testLinkedListDeque(){
+		LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+
+		Assert.assertEquals(true, lld1.isEmpty());
+
+		lld1.addFirst("front");
+
+		Assert.assertEquals(1, lld1.size());
+		Assert.assertEquals(false, lld1.isEmpty());
+
+		lld1.addLast("middle");
+		Assert.assertEquals(2, lld1.size());
+
+		lld1.addLast("back");
+		Assert.assertEquals(3, lld1.size());
+
+		System.out.println("Printing out deque: ");
+		lld1.printDeque();
+
+		System.out.println(lld1.removeLast());
+		Assert.assertEquals(2, lld1.size());
+		System.out.println("Printing out deque: ");
+		lld1.printDeque();
+
+//		System.out.println(lld1.removeFirst());
+		System.out.println("Printing out deque: ");
+		lld1.printDeque();
+
+		System.out.println("get() from list: "+lld1.get(0));
+		System.out.println("getRecursive() from list: "+lld1.getRecursive(1));
+
+//		LinkedListDeque<String> lld2 = new LinkedListDeque<String>(lld1);
+//		System.out.println("Printing out copied deque: ");
+//		lld2.printDeque();
+	}
+
+	@Test
+	public void testArrayDeque(){
+		ArrayDeque<String> lld1 = new ArrayDeque<String>();
+
+		Assert.assertEquals(true, lld1.isEmpty());
+
+		lld1.addFirst("front");
+
+		Assert.assertEquals(1, lld1.size());
+		Assert.assertEquals(false, lld1.isEmpty());
+
+		lld1.addLast("middle");
+		Assert.assertEquals(2, lld1.size());
+
+		lld1.addLast("back");
+		Assert.assertEquals(3, lld1.size());
+
+		System.out.println("Printing out deque: ");
+		lld1.printDeque();
+
+		System.out.println(lld1.removeLast());
+		Assert.assertEquals(2, lld1.size());
+		System.out.println("Printing out deque: ");
+		lld1.printDeque();
+
+		System.out.println(lld1.removeFirst());
+		System.out.println("Printing out deque: ");
+		lld1.printDeque();
+
+		System.out.println("get() from list: "+lld1.get(4));
+//		System.out.println("getRecursive() from list: "+lld1.getRecursive(1));
+
+		ArrayDeque<String> lld2 = new ArrayDeque<String>(lld1);
+		System.out.println("Printing out copied deque: ");
+		lld2.printDeque();
+
+	}
+
 	/* Utility method for printing out empty checks. */
 	public static boolean checkEmpty(boolean expected, boolean actual) {
 		if (expected != actual) {
@@ -33,10 +111,10 @@ public class LinkedListDequeTest {
 	  * finally printing the results. 
 	  *
 	  * && is the "and" operation. */
+
 	public static void addIsEmptySizeTest() {
 		System.out.println("Running add/isEmpty/Size test.");
 		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-		/*
 		LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
 
 		boolean passed = checkEmpty(true, lld1.isEmpty());
@@ -58,7 +136,6 @@ public class LinkedListDequeTest {
 		lld1.printDeque();
 
 		printTestStatus(passed);
-		*/
 	}
 
 	/** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
@@ -84,9 +161,9 @@ public class LinkedListDequeTest {
 		*/
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		System.out.println("Running tests.\n");
 		addIsEmptySizeTest();
 		addRemoveTest();
-	}
-} 
+	}*/
+}

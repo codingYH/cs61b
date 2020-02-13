@@ -21,6 +21,7 @@ public class GuitarPlayer {
     private Sequence sequence = null;
     private GuitarString[] strings;
     private double[] vol;
+    private String keyboard = "q2we4r5ty7u8i9op-[=zxdcfvgbnjmk,.;/' ";
 
     public GuitarPlayer(InputStream source) {
         try {
